@@ -1,9 +1,16 @@
 <?php
 require_once __DIR__ . '/../includes/template_repo.php';
+require_once __DIR__ . '/../includes/editor_repo.php';
 require_once __DIR__ . '/../includes/helpers.php';
 
 $keyword = isset($_GET['q']) ? trim($_GET['q']) : null;
 $templates = fetch_templates($keyword);
+
+foreach ($templates as &$tpl) {
+    $tpl['editable_regions'] = get_editable_regions($tpl['id']);
+    $tpl['is_editable'] = !empty($tpl['source_image']) && !empty(array_filter($tpl['editable_regions'], fn($r) => $r['is_editable']));
+}
+unset($tpl);
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -40,7 +47,14 @@ $templates = fetch_templates($keyword);
     <div class="grid">
         <?php foreach ($templates as $tpl): $images = format_preview_images($tpl['preview_images']); ?>
             <article class="card">
-                <img src="<?php echo e($images[0] ?? 'https://images.unsplash.com/photo-1481277542470-605612bd2d61?auto=format&fit=crop&w=1200&q=80'); ?>" alt="<?php echo e($tpl['title']); ?> 预览图">
+                <div style="position:relative;">
+                    <img src="<?php echo e($images[0] ?? 'https://images.unsplash.com/photo-1481277542470-605612bd2d61?auto=format&fit=crop&w=1200&q=80'); ?>" alt="<?php echo e($tpl['title']); ?> 预览图">
+                    <?php if ($tpl['is_editable']): ?>
+                        <span style="position:absolute;top:10px;right:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;padding:4px 10px;border-radius:999px;font-size:0.75rem;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
+                            ✨ 可在线编辑
+                        </span>
+                    <?php endif; ?>
+                </div>
                 <div class="card-body">
                     <h3><?php echo e($tpl['title']); ?></h3>
                     <p><?php echo e($tpl['description']); ?></p>
@@ -50,7 +64,11 @@ $templates = fetch_templates($keyword);
                         <?php endforeach; ?>
                     </div>
                     <div class="card-actions">
-                        <a class="btn btn-primary" style="flex:1; text-align:center;" href="<?php echo e($tpl['download_url']); ?>" target="_blank" rel="noopener">免费下载</a>
+                        <?php if ($tpl['is_editable']): ?>
+                            <a class="btn btn-primary" style="flex:1; text-align:center;" href="/editor.php?id=<?php echo e($tpl['id']); ?>">✨ 在线编辑</a>
+                        <?php else: ?>
+                            <a class="btn btn-primary" style="flex:1; text-align:center;" href="<?php echo e($tpl['download_url']); ?>" target="_blank" rel="noopener">免费下载</a>
+                        <?php endif; ?>
                         <a class="btn btn-ghost" style="flex:1; text-align:center;" href="/detail.php?id=<?php echo e($tpl['id']); ?>">进入详情</a>
                     </div>
                 </div>

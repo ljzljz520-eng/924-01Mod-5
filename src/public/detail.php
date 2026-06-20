@@ -93,14 +93,14 @@ $isEditable = !empty($template['source_image']) && !empty(array_filter($template
                 </span>
             </div>
         </div>
+    <?php else: ?>
+        <div class="detail-section download-box">
+            <h2 style="margin:0;">免费下载此模板</h2>
+            <div class="url"><?php echo e($template['download_url']); ?></div>
+            <a class="btn btn-primary" href="<?php echo e($template['download_url']); ?>" target="_blank" rel="noopener" style="padding:14px 32px;font-size:1.1rem;">立即下载</a>
+            <p class="muted" style="margin:0;font-size:0.9rem;">资源永久免费，如需定制可联系站长</p>
+        </div>
     <?php endif; ?>
-
-    <div class="detail-section download-box">
-        <h2 style="margin:0;">免费下载此模板</h2>
-        <div class="url"><?php echo e($template['download_url']); ?></div>
-        <a class="btn btn-primary" href="<?php echo e($template['download_url']); ?>" target="_blank" rel="noopener" style="padding:14px 32px;font-size:1.1rem;">立即下载</a>
-        <p class="muted" style="margin:0;font-size:0.9rem;">资源永久免费，如需定制可联系站长</p>
-    </div>
 
     <div style="text-align:center;margin-top:32px;">
         <a href="/" class="btn btn-ghost">← 返回首页</a>

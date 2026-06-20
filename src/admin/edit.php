@@ -63,6 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'download_url' => $download_url,
         'tags' => trim($_POST['tags'] ?? ''),
         'preview_images' => $preview_images,
+        'source_image' => trim($_POST['source_image'] ?? ''),
+        'canvas_width' => (int) ($_POST['canvas_width'] ?? 800),
+        'canvas_height' => (int) ($_POST['canvas_height'] ?? 1200),
     ];
 
     if (!$payload['title'] || !$payload['download_url']) {

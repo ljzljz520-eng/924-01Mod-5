@@ -40,11 +40,19 @@ foreach ($template['editable_regions'] as $region) {
     if ($region['region_type'] === 'qrcode') {
         $dataKey = 'qrcode_data_' . $region['id'];
         $imageKey = 'qrcode_image_' . $region['id'];
+        $xKey = 'qrcode_x_' . $region['id'];
+        $yKey = 'qrcode_y_' . $region['id'];
         if (isset($customConfig[$dataKey])) {
             $cleanConfig[$dataKey] = $customConfig[$dataKey];
         }
         if (isset($customConfig[$imageKey])) {
             $cleanConfig[$imageKey] = $customConfig[$imageKey];
+        }
+        if (isset($customConfig[$xKey])) {
+            $cleanConfig[$xKey] = (int) $customConfig[$xKey];
+        }
+        if (isset($customConfig[$yKey])) {
+            $cleanConfig[$yKey] = (int) $customConfig[$yKey];
         }
     }
 }

@@ -285,6 +285,17 @@ function render_image(array $template, array $customConfig, bool $isPreview = tr
             $scaledConfig['size'] = (int) ($scaledConfig['size'] * min($scaleX, $scaleY));
         }
         
+        if ($region['region_type'] === 'qrcode') {
+            $xOverride = $customConfig['qrcode_x_' . $region['id']] ?? null;
+            $yOverride = $customConfig['qrcode_y_' . $region['id']] ?? null;
+            if ($xOverride !== null) {
+                $scaledConfig['x'] = (int) ($xOverride * $scaleX);
+            }
+            if ($yOverride !== null) {
+                $scaledConfig['y'] = (int) ($yOverride * $scaleY);
+            }
+        }
+        
         if ($region['region_type'] === 'text' && !empty($value)) {
             render_text($image, $scaledConfig, (string) $value);
         } elseif ($region['region_type'] === 'qrcode') {
